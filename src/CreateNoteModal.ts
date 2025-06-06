@@ -147,9 +147,10 @@ export default class CreateNoteModal extends Modal {
     const { vault } = this.app;
     const { adapter } = vault;
     const prependDirInput = path.join(this.newDirectoryPath, input);
-    const { dir, name } = path.parse(prependDirInput);
+    const { dir, name, ext } = path.parse(prependDirInput);
     const directoryPath = path.join(this.folder.path, dir);
-    const filePath = path.join(directoryPath, `${name}.md`);
+    const fileExtension = ext || '.md'; // Default to .md if no extension provided
+    const filePath = path.join(directoryPath, `${name}${fileExtension}`);
 
     try {
       const fileExists = await adapter.exists(filePath);
