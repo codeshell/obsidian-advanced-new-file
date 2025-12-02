@@ -154,11 +154,15 @@ export default class CreateNoteModal extends Modal {
     const prependDirInput = path.join(this.newDirectoryPath, input);
     const { dir, name, ext } = path.parse(prependDirInput);
     const directoryPath = path.join(this.folder.path, dir);
-    const defaultExtension = '.md'; // TODO: add setting to make this customizable
+    const defaultExtension =
+      '.' + this.plugin.settings.extension_default.replace(/^\./gi, ''); // TODO: add GUI to make this customizable
 
     let fileExtension = ext;
 
-    if (this.plugin.settings.enable_extension_templates) {
+    if (
+      this.plugin.settings.enable_extension_templates &&
+      defaultExtension.length > 1
+    ) {
       if (!ext) {
         fileExtension = defaultExtension; // Set default if no extension provided
       }

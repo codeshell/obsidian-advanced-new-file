@@ -16,11 +16,13 @@ export const DEFAULT_SETTINGS: Settings = {
   enable_folder_templates: false,
   folder_templates: [{ folder: '', active: false }],
   enable_extension_templates: true,
+  extension_default: 'md',
   extension_templates: [
     { extension: 'canvas', active: true },
     { extension: 'base', active: true },
     { extension: 'js', active: true },
-    { extension: 'css', active: true },
+    { extension: 'json', active: true },
+    { extension: 'css', active: false },
   ],
 };
 
@@ -28,6 +30,7 @@ export interface Settings {
   enable_folder_templates: boolean;
   folder_templates: Array<FolderTemplate>;
   enable_extension_templates: boolean;
+  extension_default: string;
   extension_templates: Array<ExtensionTemplate>;
 }
 
