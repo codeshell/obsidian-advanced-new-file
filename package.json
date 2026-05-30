@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint . --ext .ts && tsc --noEmit && prettier --check src/",
     "dev": "node esbuild.config.mjs",
-    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
+    "build": "node esbuild.config.mjs production",
+    "build:dev": "node esbuild.config.mjs development"
   },
   "keywords": [],
   "author": "",

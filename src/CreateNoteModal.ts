@@ -194,7 +194,7 @@ export default class CreateNoteModal extends Modal {
       // Create the file and open it in the active leaf
       let leaf = this.app.workspace.getLeaf(false);
       if (this.mode === NewFileLocation.NewPane) {
-        leaf = this.app.workspace.splitLeafOrActive();
+        leaf = this.app.workspace.getLeaf('split');
       } else if (this.mode === NewFileLocation.NewTab) {
         leaf = this.app.workspace.getLeaf(true);
       } else if (!leaf) {

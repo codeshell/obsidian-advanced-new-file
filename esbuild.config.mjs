@@ -10,46 +10,53 @@ https://github.com/vanadium23/obsidian-advanced-new-file
 `;
 
 const prod = process.argv[2] === 'production';
+const dev = process.argv[2] === 'development';
 
-esbuild
-  .build({
-    banner: {
-      js: banner,
-    },
-    entryPoints: ['src/main.ts'],
-    bundle: true,
-    external: [
-      'obsidian',
-      'electron',
-      '@codemirror/autocomplete',
-      '@codemirror/closebrackets',
-      '@codemirror/collab',
-      '@codemirror/commands',
-      '@codemirror/comment',
-      '@codemirror/fold',
-      '@codemirror/gutter',
-      '@codemirror/highlight',
-      '@codemirror/history',
-      '@codemirror/language',
-      '@codemirror/lint',
-      '@codemirror/matchbrackets',
-      '@codemirror/panel',
-      '@codemirror/rangeset',
-      '@codemirror/rectangular-selection',
-      '@codemirror/search',
-      '@codemirror/state',
-      '@codemirror/stream-parser',
-      '@codemirror/text',
-      '@codemirror/tooltip',
-      '@codemirror/view',
-      ...builtins,
-    ],
-    format: 'cjs',
-    watch: !prod,
-    target: 'es2016',
-    logLevel: 'info',
-    sourcemap: prod ? false : 'inline',
-    treeShaking: true,
-    outfile: 'main.js',
-  })
-  .catch(() => process.exit(1));
+const buildOptions = {
+  banner: {
+    js: banner,
+  },
+  entryPoints: ['src/main.ts'],
+  bundle: true,
+  external: [
+    'obsidian',
+    'electron',
+    '@codemirror/autocomplete',
+    '@codemirror/closebrackets',
+    '@codemirror/collab',
+    '@codemirror/commands',
+    '@codemirror/comment',
+    '@codemirror/fold',
+    '@codemirror/gutter',
+    '@codemirror/highlight',
+    '@codemirror/history',
+    '@codemirror/language',
+    '@codemirror/lint',
+    '@codemirror/matchbrackets',
+    '@codemirror/panel',
+    '@codemirror/rangeset',
+    '@codemirror/rectangular-selection',
+    '@codemirror/search',
+    '@codemirror/state',
+    '@codemirror/stream-parser',
+    '@codemirror/text',
+    '@codemirror/tooltip',
+    '@codemirror/view',
+    ...builtins,
+  ],
+  format: 'cjs',
+  target: 'es2016',
+  logLevel: 'info',
+  minify: prod ? true : false,
+  sourcemap: prod ? false : 'inline',
+  treeShaking: true,
+  outfile: 'main.js',
+};
+
+if (!prod && !dev) {
+  // Watch mode: use the context API (esbuild >= 0.17)
+  const ctx = await esbuild.context(buildOptions);
+  await ctx.watch();
+} else {
+  await esbuild.build(buildOptions);
+}
