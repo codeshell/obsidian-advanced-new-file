@@ -50,22 +50,22 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
   echo "Updating package.json"
-  TEMP_FILE=$(mktemp)
-#   jq ".version |= \"${NEW_VERSION}\"" package.json > "$TEMP_FILE" || exit 1
   node -e "const fs=require('fs'); const p='package.json'; const j=JSON.parse(fs.readFileSync(p,'utf8')); j.version='${NEW_VERSION}'; fs.writeFileSync(p,JSON.stringify(j,null,2)+'\n');"
-  mv "$TEMP_FILE" package.json
+#   TEMP_FILE=$(mktemp)
+#   jq ".version |= \"${NEW_VERSION}\"" package.json > "$TEMP_FILE" || exit 1
+#   mv "$TEMP_FILE" package.json
 
   echo "Updating manifest.json"
-  TEMP_FILE=$(mktemp)
-#   jq ".version |= \"${NEW_VERSION}\" | .minAppVersion |= \"${MINIMUM_OBSIDIAN_VERSION}\"" manifest.json > "$TEMP_FILE" || exit 1
   node -e "const fs=require('fs'); const p='manifest.json'; const j=JSON.parse(fs.readFileSync(p,'utf8')); j.version='${NEW_VERSION}'; j.minAppVersion='${MINIMUM_OBSIDIAN_VERSION}'; fs.writeFileSync(p,JSON.stringify(j,null,2)+'\n');"
-  mv "$TEMP_FILE" manifest.json
+#   TEMP_FILE=$(mktemp)
+#   jq ".version |= \"${NEW_VERSION}\" | .minAppVersion |= \"${MINIMUM_OBSIDIAN_VERSION}\"" manifest.json > "$TEMP_FILE" || exit 1
+#   mv "$TEMP_FILE" manifest.json
 
   echo "Updating versions.json"
-  TEMP_FILE=$(mktemp)
-#   jq ". += {\"${NEW_VERSION}\": \"${MINIMUM_OBSIDIAN_VERSION}\"}" versions.json > "$TEMP_FILE" || exit 1
   node -e "const fs=require('fs'); const p='versions.json'; const j=JSON.parse(fs.readFileSync(p,'utf8')); j['${NEW_VERSION}']='${MINIMUM_OBSIDIAN_VERSION}'; fs.writeFileSync(p,JSON.stringify(j,null,2)+'\n');"
-  mv "$TEMP_FILE" versions.json
+#   TEMP_FILE=$(mktemp)
+#   jq ". += {\"${NEW_VERSION}\": \"${MINIMUM_OBSIDIAN_VERSION}\"}" versions.json > "$TEMP_FILE" || exit 1
+#   mv "$TEMP_FILE" versions.json
 
   echo "Running npm in case node_modules is out-of-date"
   echo "This will also update package-lock.json with the new version number, which will be committed."
