@@ -23,7 +23,10 @@ if [ "$#" -ne 2 ]; then
     exit 1
 fi
 
-if [[ $(git status --porcelain) ]]; then
+if [[ $(git status --porcelain) == " M package-lock.json" ]]; then
+  echo "Info: package-lock.json has unstaged changes. Will be recreated with new version and committed."
+  echo "Continuing."
+elif [[ $(git status --porcelain) ]]; then
   echo "Changes in the git repo."
   echo "Exiting."
 
@@ -46,9 +49,6 @@ read -p "Continue? [y/N] " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  echo "Running npm in case node_modules is out-of-date"
-  npm install
-
   echo "Updating package.json"
   TEMP_FILE=$(mktemp)
   jq ".version |= \"${NEW_VERSION}\"" package.json > "$TEMP_FILE" || exit 1
@@ -63,6 +63,10 @@ then
   TEMP_FILE=$(mktemp)
   jq ". += {\"${NEW_VERSION}\": \"${MINIMUM_OBSIDIAN_VERSION}\"}" versions.json > "$TEMP_FILE" || exit 1
   mv "$TEMP_FILE" versions.json
+
+  echo "Running npm in case node_modules is out-of-date"
+  echo "This will also update package-lock.json with the new version number, which will be committed."
+  npm install
 
   read -p "Create git commit, tag, and push? [y/N] " -n 1 -r
   echo
