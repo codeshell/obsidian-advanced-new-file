@@ -59,9 +59,9 @@ There are some defaults for non-markdown files that are frequently used within O
 
 ![Settings for custom extensions](images/settings-custom-extensions.png)
 
-Instead of removing an entry it can also be toggled as active / inactive for temporary adjustments. Might be "creativly" used for adding comments like a reminder to oneself why a specific entry was disabled.
+Instead of removing an entry it can also be toggled as active / inactive for temporary adjustments. Might be "creatively" used for adding comments like a reminder to oneself why a specific entry was disabled.
 
-Changing the order has _no_ influence on how the plugin is working but might help users with a lot of entries to organize their list.
+Changing the order has _no_ influence on how the plugin is working but might help users with a lot of entries organize their list.
 
 ## Build
 

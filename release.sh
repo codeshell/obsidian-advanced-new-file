@@ -51,21 +51,12 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
   echo "Updating package.json"
   node -e "const fs=require('fs'); const p='package.json'; const j=JSON.parse(fs.readFileSync(p,'utf8')); j.version='${NEW_VERSION}'; fs.writeFileSync(p,JSON.stringify(j,null,2)+'\n');"
-#   TEMP_FILE=$(mktemp)
-#   jq ".version |= \"${NEW_VERSION}\"" package.json > "$TEMP_FILE" || exit 1
-#   mv "$TEMP_FILE" package.json
 
   echo "Updating manifest.json"
   node -e "const fs=require('fs'); const p='manifest.json'; const j=JSON.parse(fs.readFileSync(p,'utf8')); j.version='${NEW_VERSION}'; j.minAppVersion='${MINIMUM_OBSIDIAN_VERSION}'; fs.writeFileSync(p,JSON.stringify(j,null,2)+'\n');"
-#   TEMP_FILE=$(mktemp)
-#   jq ".version |= \"${NEW_VERSION}\" | .minAppVersion |= \"${MINIMUM_OBSIDIAN_VERSION}\"" manifest.json > "$TEMP_FILE" || exit 1
-#   mv "$TEMP_FILE" manifest.json
 
   echo "Updating versions.json"
-  node -e "const fs=require('fs'); const p='versions.json'; const j=JSON.parse(fs.readFileSync(p,'utf8')); j['${NEW_VERSION}']='${MINIMUM_OBSIDIAN_VERSION}'; fs.writeFileSync(p,JSON.stringify(j,null,2)+'\n');"
-#   TEMP_FILE=$(mktemp)
-#   jq ". += {\"${NEW_VERSION}\": \"${MINIMUM_OBSIDIAN_VERSION}\"}" versions.json > "$TEMP_FILE" || exit 1
-#   mv "$TEMP_FILE" versions.json
+  node -e "const fs=require('fs'); const p='versions.json'; const j=JSON.parse(fs.readFileSync(p,'utf8')); const k={ '${NEW_VERSION}': '${MINIMUM_OBSIDIAN_VERSION}'}; fs.writeFileSync(p,JSON.stringify({...k, ...j},null,2)+'\n');"
 
   echo "Running npm in case node_modules is out-of-date"
   echo "This will also update package-lock.json with the new version number, which will be committed."
@@ -78,10 +69,8 @@ then
     git add -A .
     git commit -m"Update to version ${NEW_VERSION}"
     git tag "${NEW_VERSION}"
-    # git push
-    # LEFTHOOK=0 git push --tags
-
-    # echo "Remember to publish the documentation via Obsidian Publish!"
+    git push
+    LEFTHOOK=0 git push --tags
   fi
 
 else
